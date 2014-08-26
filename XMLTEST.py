@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#Erstellt von Gerhard ZEISLER 24.08.2014
+#Erstellt von ... 24.08.2014
 import lxml.etree as ET
 import cx_Oracle
 import argparse
