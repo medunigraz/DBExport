@@ -1,5 +1,6 @@
 #!/usr/bin/python
 #Erstellt von ... 24.08.2014
+import sys
 import lxml.etree as ET
 import cx_Oracle
 import argparse
@@ -88,5 +89,5 @@ cur_STPL.close()
 connection.close()
 logging.info("Verbindungen geschlossen")
 tree = ET.ElementTree(xml_ROOT)
-tree.write("DB_expo.xml",pretty_print=True)
+tree.write(sys.stdout,pretty_print=True)
 logging.info("XML geschrieben")
