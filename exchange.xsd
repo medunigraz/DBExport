@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified"
+	elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="EXCHANGE" type="EXCHANGEComplexType">
+	</xs:element>
+	<xs:complexType name="EXCHANGEComplexType">
+		<xs:sequence>
+			<xs:element name="STPL" type="STPLComplexType">
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="STPLComplexType">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="FACH"
+				type="FACHComplexType">
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute use="required" name="SKZ_UNI" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="SKZ_KEY" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="SKZKEY" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="SKZBEZ" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="VERSION" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="GUELTIG_AB" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="GUELTIG_BIS" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="STUDIERBAR_BIS" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="ABSCHNITT" type="xs:int"></xs:attribute>
+		<xs:attribute use="required" name="SEMESTER" type="xs:int"></xs:attribute>
+		<xs:attribute use="required" name="SWS" type="xs:float"></xs:attribute>
+		<xs:attribute use="required" name="CREDITS" type="xs:float"></xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="GHKComplexType">
+		<xs:attribute use="required" name="TITEL" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="KURZBEZEICHNUNG" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="CREDITS" type="xs:float"></xs:attribute>
+		<xs:attribute use="required" name="STP_LV_NR" type="xs:int"></xs:attribute>
+		<xs:attribute use="required" name="NR" type="xs:int"></xs:attribute>
+		<xs:attribute use="required" name="SWS" type="xs:float"></xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="FACHComplexType" mixed="true">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="GHK"
+				type="GHKComplexType">
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute use="required" name="CREDITS" type="xs:float"></xs:attribute>
+		<xs:attribute use="required" name="SWS" type="xs:float"></xs:attribute>
+		<xs:attribute use="required" name="KENNUNG" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="NAME" type="xs:string"></xs:attribute>
+		<xs:attribute use="required" name="NAME_ENGL" type="xs:string"></xs:attribute>
+	</xs:complexType>
+</xs:schema>
