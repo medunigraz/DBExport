@@ -60,9 +60,10 @@ keys_GHK = keys_FACH | set((
     "KENNUNG",
     ))
 
+logging.info("Erstelle XML Struktur...")
+
 cur_STPL = cx_Oracle.Cursor(connection)
 cur_STPL.execute("SELECT * FROM STPL_V")
-logging.info("Erstelle XML Struktur...")
 for row_STPL in fetchdict(cur_STPL):
     xml_STPL = ET.SubElement(xml_ROOT, "STPL")
     for name in columns(cur_STPL):
@@ -84,6 +85,22 @@ for row_STPL in fetchdict(cur_STPL):
         cur_GHK.close()
     cur_FACH.close()
 cur_STPL.close()
+
+cur_LV = cx_Oracle.Cursor(connection)
+cur_LV.execute("SELECT * FROM LV_V")
+for row_LV in fetchdict(cur_LV):
+    xml_LV = ET.SubElement(xml_ROOT, "LV")
+    for name in columns(cur_LV):
+        xml_LV.set(name, unicode(row_LV[name]))
+cur_LV.close()
+
+cur_PV = cx_Oracle.Cursor(connection)
+cur_PV.execute("SELECT * FROM PV_V")
+for row_PV in fetchdict(cur_PV):
+    xml_PV = ET.SubElement(xml_ROOT, "PV")
+    for name in columns(cur_PV):
+        xml_PV.set(name, unicode(row_PV[name]))
+cur_PV.close()
 
 #######################################
 connection.close()
