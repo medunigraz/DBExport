@@ -68,14 +68,14 @@ for row_STPL in fetchdict(cur_STPL):
         xml_STPL.set(name, unicode(row_STPL[name]))
     cur_FACH = cx_Oracle.Cursor(connection)
     sql = "SELECT * FROM STPL_FACH_V WHERE {cond}".format(cond=conditions(keys_FACH))
-    cur_FACH.execute(sql, {key: row_STPL[key] for key in keys_FACH})
+    cur_FACH.execute(sql, dict((key, row_STPL[key]) for key in keys_FACH))
     for row_FACH in fetchdict(cur_FACH):
         xml_FACH = ET.SubElement(xml_STPL, "FACH")
         for name in set(columns(cur_FACH)) - keys_FACH:
             xml_FACH.set(name, unicode(row_FACH[name]))
         cur_GHK = cx_Oracle.Cursor(connection)
         sql = "SELECT * FROM STPL_GHK_V WHERE {cond}".format(cond=conditions(keys_GHK))
-        cur_GHK.execute(sql, {key: row_FACH[key] for key in keys_GHK})
+        cur_GHK.execute(sql, dict((key, row_FACH[key]) for key in keys_GHK))
         for row_GHK in fetchdict(cur_GHK):
             xml_GHK = ET.SubElement(xml_FACH, "GHK")
             for name in set(columns(cur_GHK)) - keys_GHK:
