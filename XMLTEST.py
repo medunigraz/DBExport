@@ -13,92 +13,80 @@ parser.add_argument('-v',help='Verbose Mode [Default: none]', action='store_true
 args = parser.parse_args()
 ######################################
 if args.v:
-	logging.basicConfig(format = "%(asctime)s [%(levelname)-s] %(message)s",level = logging.DEBUG)
-	logging.info("Verbose aktiviert")
+    logging.basicConfig(format = "%(asctime)s [%(levelname)-s] %(message)s",level = logging.DEBUG)
+    logging.info("Verbose aktiviert")
 else:
-	logging.basicConfig(format = "%(asctime)s [%(levelname)-s] %(message)s")
+    logging.basicConfig(format = "%(asctime)s [%(levelname)-s] %(message)s")
 
 ####DB CONNECT########################
 try:
-	connection = cx_Oracle.Connection("%s/%s@%s" % (args.usr, args.pwd, args.host))
-	cursor = cx_Oracle.Cursor(connection)
-	logging.info("Erfolgreich Verbunden")
+    connection = cx_Oracle.Connection("%s/%s@%s" % (args.usr, args.pwd, args.host))
+    logging.info("Erfolgreich Verbunden")
 except cx_Oracle.Error as e:
-	logging.critical(e)
-	exit(-1)
+    logging.critical(e)
+    exit(-1)
 except:
-	logging.critical("ERROR beim Verbinden!")
-	exit(-2)
+    logging.critical("ERROR beim Verbinden!")
+    exit(-2)
 ######################################
 
+def columns(cursor):
+    return zip(*cursor.description)[0]
 
-#########SQL MAGIE####################
-try:
-	sql = "SELECT * FROM STPL_FACH_V ORDER BY SKZ_UNI,SKZ_KEY,SKZKEY,VERSION,ABSCHNITT,KENNUNG,NAME,NAME_ENGL,SWS,CREDITS"
-	cursor.execute(sql)
-	inhalt_STPL_FACH_V = cursor.fetchall()
-	sql = "SELECT * FROM STPL_GHK_V ORDER BY NR,SKZ_UNI,SKZ_KEY,SKZKEY,VERSION,ABSCHNITT,KENNUNG,STP_LV_NR,KURZBEZEICHNUNG,TITEL,SWS,CREDITS"
-	cursor.execute(sql)
-	inhalt_STPL_GHK_V = cursor.fetchall()
-	sql = "SELECT * FROM STPL_V ORDER BY SKZ_UNI,SKZ_KEY,SKZKEY,SKZBEZ,VERSION,GUELTIG_AB,GUELTIG_BIS,STUDIERBAR_BIS,ABSCHNITT,SWS,SEMESTER,CREDITS"
-	cursor.execute(sql)
-	inhalt_STPL_V = cursor.fetchall()
-	logging.info("Erfolgreich alle SQL Befehle ausgefuehrt")
-except cx_Oracle.Error as e:
-	logging.critical(e)
-	exit(-1)
-except:
-	logging.critical("ERROR beim fetchen!")
-	exit(-2)
-	
+def fetchdict(cursor):
+    names = columns(cursor)
+    for row in cursor:
+        yield dict(zip(names, row))
 
-######################################
-
+def conditions(keys):
+    return " AND ".join(["{name}=:{name}".format(name=name) for name in keys])
 
 #####XML STRUKTUR#####################
-STPL = ET.Element("STPL")
+xml_ROOT = ET.Element("EXCHANGE")
 ######################################
 
 
 ########XML VERSCHACHTELN#############
+keys_FACH = set((
+    "SKZ_UNI",
+    "SKZ_KEY",
+    "SKZKEY",
+    "VERSION",
+    "ABSCHNITT",
+    ))
+
+keys_GHK = keys_FACH | set((
+    "KENNUNG",
+    ))
+
+cur_STPL = cx_Oracle.Cursor(connection)
+cur_STPL.execute("SELECT * FROM STPL_V")
 logging.info("Erstelle XML Struktur...")
-for liste_STPL_V in inhalt_STPL_V:
-	field1 = ET.SubElement(STPL, "STPL_V")
-	field1.set('SKZ_UNI',bytes(liste_STPL_V[0]))
-	field1.set("SKZ_KEY",bytes(liste_STPL_V[1]))
-	field1.set("SKZKEY",liste_STPL_V[2])
-	field1.set("SKZBEZ",liste_STPL_V[3])
-	field1.set("VERSION",bytes(liste_STPL_V[4]))
-	field1.set("GUELTIG_AB",bytes(liste_STPL_V[5]))
-	field1.set("GUELTIG_BIS",bytes(liste_STPL_V[6]))
-	field1.set("STUDIERBAR_BIS",bytes(liste_STPL_V[7]))
-	field1.set("ABSCHNITT",bytes(liste_STPL_V[8]))
-	field1.set("SEMESTER",bytes(liste_STPL_V[9]))
-	field1.set("SWS",bytes(liste_STPL_V[10]))
-	field1.set("CREDITS",bytes(liste_STPL_V[11]))
-	for liste_STPL_FACH_V in inhalt_STPL_FACH_V:
-		if liste_STPL_V[0] in liste_STPL_FACH_V:
-			field2 = ET.SubElement(field1, "STPL_FACH_V")
-			field2.set("KENNUNG",bytes(liste_STPL_FACH_V[5]))
-			field2.set("NAME",liste_STPL_FACH_V[6])
-			field2.set("NAME-ENGL",liste_STPL_FACH_V[7])
-			field2.set("SWS",bytes(liste_STPL_FACH_V[8]))
-			field2.set("CREDITS",bytes(liste_STPL_FACH_V[9]))
-			for liste_STPL_GHK_V in inhalt_STPL_GHK_V:
-				if liste_STPL_FACH_V[0] in liste_STPL_GHK_V and liste_STPL_FACH_V[5] in liste_STPL_GHK_V:
-					field3 = ET.SubElement(field2, "STPL_GHK_V")
-					field3.set("NR",bytes(liste_STPL_GHK_V[0]))
-					field3.set("KENNUNG",bytes(liste_STPL_GHK_V[6]))
-					field3.set("STP_LV_NR",bytes(liste_STPL_GHK_V[7]))
-					field3.set("KURZBEZEICHNUNG",liste_STPL_GHK_V[8])
-					field3.set("TITEL",liste_STPL_GHK_V[9])
-					field3.set("SWS",bytes(liste_STPL_GHK_V[10]))
-					field3.set("CREDITS",bytes(liste_STPL_GHK_V[11]))
+for row_STPL in fetchdict(cur_STPL):
+    xml_STPL = ET.SubElement(xml_ROOT, "STPL")
+    for name in columns(cur_STPL):
+        xml_STPL.set(name, unicode(row_STPL[name]))
+    cur_FACH = cx_Oracle.Cursor(connection)
+    sql = "SELECT * FROM STPL_FACH_V WHERE {cond}".format(cond=conditions(keys_FACH))
+    cur_FACH.execute(sql, {key: row_STPL[key] for key in keys_FACH})
+    for row_FACH in fetchdict(cur_FACH):
+        xml_FACH = ET.SubElement(xml_STPL, "FACH")
+        for name in set(columns(cur_FACH)) - keys_FACH:
+            xml_FACH.set(name, unicode(row_FACH[name]))
+        cur_GHK = cx_Oracle.Cursor(connection)
+        sql = "SELECT * FROM STPL_GHK_V WHERE {cond}".format(cond=conditions(keys_GHK))
+        cur_GHK.execute(sql, {key: row_FACH[key] for key in keys_GHK})
+        for row_GHK in fetchdict(cur_GHK):
+            xml_GHK = ET.SubElement(xml_FACH, "GHK")
+            for name in set(columns(cur_GHK)) - keys_GHK:
+                xml_GHK.set(name, unicode(row_GHK[name]))
+        cur_GHK.close()
+    cur_FACH.close()
+cur_STPL.close()
+
 #######################################
-cursor.close()
 connection.close()
 logging.info("Verbindungen geschlossen")
-tree = ET.ElementTree(STPL)
+tree = ET.ElementTree(xml_ROOT)
 tree.write("DB_expo.xml",pretty_print=True)
 logging.info("XML geschrieben")
-exit(0)
