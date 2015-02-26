@@ -1,89 +1,78 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema attributeFormDefault="unqualified"
-    elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="EXCHANGE" type="EXCHANGEComplexType">
-    </xs:element>
-    <xs:complexType name="EXCHANGEComplexType">
-        <xs:sequence>
-            <xs:sequence>
-                <xs:element name="STPL" type="STPLComplexType" />
-            <xs:sequence>
-            <xs:sequence>
-                <xs:element name="LV" type="LVComplexType" />
-            <xs:sequence>
-            <xs:sequence>
-                <xs:element name="PV" type="PVComplexType" />
-            </xs:sequence>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="STPLComplexType">
-        <xs:sequence>
-            <xs:element minOccurs="0" maxOccurs="unbounded" name="FACH"
-                type="FACHComplexType">
-            </xs:element>
-        </xs:sequence>
-        <xs:attribute use="required" name="SKZ_UNI" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="SKZ_KEY" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="SKZKEY" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="SKZBEZ" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="VERSION" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="GUELTIG_AB" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="GUELTIG_BIS" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="STUDIERBAR_BIS" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="ABSCHNITT" type="xs:int"></xs:attribute>
-        <xs:attribute use="required" name="SEMESTER" type="xs:int"></xs:attribute>
-        <xs:attribute use="required" name="SWS" type="xs:float"></xs:attribute>
-        <xs:attribute use="required" name="CREDITS" type="xs:float"></xs:attribute>
-    </xs:complexType>
-    <xs:complexType name="FACHComplexType" mixed="true">
-        <xs:sequence>
-            <xs:element minOccurs="0" maxOccurs="unbounded" name="GHK"
-                type="GHKComplexType">
-            </xs:element>
-        </xs:sequence>
-        <xs:attribute use="required" name="CREDITS" type="xs:float"></xs:attribute>
-        <xs:attribute use="required" name="SWS" type="xs:float"></xs:attribute>
-        <xs:attribute use="required" name="KENNUNG" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="NAME" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="NAME_ENGL" type="xs:string"></xs:attribute>
-    </xs:complexType>
-        <xs:complexType name="GHKComplexType">
-        <xs:attribute use="required" name="TITEL" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="KURZBEZEICHNUNG" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="CREDITS" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="STP_LV_NR" type="xs:int"></xs:attribute>
-        <xs:attribute use="required" name="NR" type="xs:int"></xs:attribute>
-        <xs:attribute use="required" name="SWS" type="xs:float"></xs:attribute>
-    </xs:complexType>
-    <xs:complexType name="LVComplexType">
-        <xs:attribute use="required" name="NR" type="xs:int"></xs:attribute>
-        <xs:attribute use="required" name="GHK" type="xs:int"></xs:attribute>
-        <xs:attribute use="required" name="LVNR" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="STOFFSEMESTER" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="TITEL" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="UNTERTITEL" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="TITEL_ENGL" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="UNTERTITEL_ENG" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="LV_ART" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="SWS" type="xs:float"></xs:attribute>
-        <xs:attribute use="required" name="CREDITS" type="xs:float"></xs:attribute>
-    </xs:complexType>
-    <xs:complexType name="PVComplexType">
-        <xs:attribute use="required" name="STP_LV_NR" type="xs:int"></xs:attribute>
-        <xs:attribute use="required" name="DATUM_DER_LETZTBEURTEILUNG" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="NOTE" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="PRF_VERSUCH" type="xs:int"></xs:attribute>
-        <xs:attribute use="required" name="TITEL" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="PRUEFER_VORNAME" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="PRUEFER_NACHNAME" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="GESCHLECHT" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="MATRIKELNUMMER" type="xs:int"></xs:attribute>
-        <xs:attribute use="required" name="SKZ" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="STUDIENPLANVERSION" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="ANERKENNUNG_JA_NEIN" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="ANERKENNUNGSTITEL_DT" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="ANERKENNUNGSTITEL_ENGL" type="xs:string"></xs:attribute>
-        <xs:attribute use="required" name="ANERKENNUNGS_ECTS" type="xs:float"></xs:attribute>
-        <xs:attribute use="required" name="ANERKENNUNGS_GHK" type="xs:float"></xs:attribute>
-    </xs:complexType>
-</xs:schema>
+<?xml version="1.0" encoding="utf-16"?>
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="EXCHANGE" type="EXCHANGEType" />
+  <xsd:complexType name="EXCHANGEType">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" name="STPL" type="STPLType" />
+      <xsd:element maxOccurs="unbounded" name="LV" type="LVType" />
+      <xsd:element maxOccurs="unbounded" name="PV" type="PVType" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="PVType">
+    <xsd:attribute name="NR" type="xsd:int" />
+    <xsd:attribute name="LV_NR" type="xsd:int" />
+    <xsd:attribute name="DATUM_DER_LETZTBEURTEILUNG" type="xsd:dateTime" />
+    <xsd:attribute name="NOTE" type="xsd:string" />
+    <xsd:attribute name="PRF_VERSUCH" type="xsd:int" />
+    <xsd:attribute name="TITEL" type="xsd:string" />
+    <xsd:attribute name="PRUEFER_VORNAME" type="xsd:string" />
+    <xsd:attribute name="PRUEFER_NACHNAME" type="xsd:string" />
+    <xsd:attribute name="GESCHLECHT" type="xsd:string" />
+    <xsd:attribute name="MATRIKELNUMMER" type="xsd:int" />
+    <xsd:attribute name="SKZ" type="xsd:string" />
+    <xsd:attribute name="STUDIENPLANVERSION" type="xsd:string" />
+    <xsd:attribute name="ANERKENNUNG_JA_NEIN" type="xsd:string" />
+    <xsd:attribute name="ANERKENNUNGSTITEL_DT" type="xsd:string" />
+    <xsd:attribute name="ANERKENNUNGSTITEL_ENGL" type="xsd:string" />
+    <xsd:attribute name="ANERKENNUNGS_ECTS" type="xsd:int" />
+    <xsd:attribute name="ANERKENNUNGS_GHK" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="LVType">
+    <xsd:attribute name="NR" type="xsd:int" />
+    <xsd:attribute name="GHK" type="xsd:int" />
+    <xsd:attribute name="LVNR" type="xsd:int" />
+    <xsd:attribute name="STOFFSEMESTER" type="xsd:string" />
+    <xsd:attribute name="TITEL" type="xsd:string" />
+    <xsd:attribute name="UNTERTITEL" type="xsd:string" />
+    <xsd:attribute name="TITEL_ENGL" type="xsd:string" />
+    <xsd:attribute name="UNTERTITEL_ENG" type="xsd:string" />
+    <xsd:attribute name="LV_ART" type="xsd:string" />
+    <xsd:attribute name="SWS" type="xsd:int" />
+    <xsd:attribute name="CREDITS" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="STPLType">
+    <xsd:sequence>
+      <xsd:element maxOccurs="unbounded" name="FACH" type="FACHType" />
+    </xsd:sequence>
+    <xsd:attribute name="SKZ_UNI" type="xsd:string" />
+    <xsd:attribute name="SKZ_KEY" type="xsd:string" />
+    <xsd:attribute name="SKZKEY" type="xsd:int" />
+    <xsd:attribute name="SKZBEZ" type="xsd:string" />
+    <xsd:attribute name="VERSION" type="xsd:string" />
+    <xsd:attribute name="GUELTIG_AB" type="xsd:dateTime" />
+    <xsd:attribute name="GUELTIG_BIS" type="xsd:string" />
+    <xsd:attribute name="STUDIERBAR_BIS" type="xsd:string" />
+    <xsd:attribute name="ABSCHNITT" type="xsd:int" />
+    <xsd:attribute name="SEMESTER" type="xsd:int" />
+    <xsd:attribute name="SWS" type="xsd:int" />
+    <xsd:attribute name="CREDITS" type="xsd:int" />
+  </xsd:complexType>
+  <xsd:complexType name="FACHType">
+    <xsd:sequence>
+      <xsd:element name="GHK" type="GHKType" />
+    </xsd:sequence>
+    <xsd:attribute name="CREDITS" type="xsd:int" />
+    <xsd:attribute name="SWS" type="xsd:int" />
+    <xsd:attribute name="KENNUNG" type="xsd:string" />
+    <xsd:attribute name="NAME" type="xsd:string" />
+    <xsd:attribute name="NAME_ENGL" type="xsd:string" />
+  </xsd:complexType>
+  <xsd:complexType name="GHKType">
+    <xsd:attribute name="TITEL" type="xsd:string" />
+    <xsd:attribute name="KURZBEZEICHNUNG" type="xsd:string" />
+    <xsd:attribute name="CREDITS" type="xsd:int" />
+    <xsd:attribute name="STP_LV_NR" type="xsd:int" />
+    <xsd:attribute name="NR" type="xsd:int" />
+    <xsd:attribute name="SWS" type="xsd:int" />
+  </xsd:complexType>
+</xsd:schema>
